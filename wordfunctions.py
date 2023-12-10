@@ -6,9 +6,9 @@ writer = t.Turtle()
 writer.speed(0)
 writer.penup()
 writer.hideturtle()
-writer.goto(-250, -300)
+writer.goto(-260, -300)
 wn = t.Screen()
-christmas_words = [
+Christmas_words = [
     "Snowflake", "Reindeer", "Mistletoe", "Sleigh", "Santa", "Elf", "Gingerbread", "Ornament", 
     "Stocking", "Chimney", "Presents", "Wreath", "Candy cane", "Christmas tree", "Snowman", 
     "Icicle", "Frost", "Cookies", "Eggnog", "Tinsel", "Yule log", "Fairy lights", "Hot chocolate", 
@@ -37,46 +37,67 @@ christmas_words = [
     "Gift wrap", "Gingerbread man", "Glee", "Glisten", "Glitter", "Gloves", "Goodwill", "Goose", 
     "Greetings", "Happy", "Hearth", "Holiday", "Hug", "Icicle", "Illumination", "Jingle", "Joy", 
     "Kringle", "Laugh", "Laurel", "Lights", "Log", "Love", "Magic", "Merry", "Mince"]
+christmas_words = [i.lower() for i in Christmas_words]
+space_l = ["asdads asdasd asdad ", "asd asd asd ", "d d d" ]
 print(len(christmas_words))
 
-def generate_words_o(len, list):
+def generate_words_o(len_list, list):
     sutible_l = []
+    lenn = random.choice(len_list)
     for i in list:
-        if len(i)== len:
+        if len(i)== lenn:
             sutible_l.append(i)
-    if sutible_l:
+    if len(sutible_l) > 0:
         return random.choice(sutible_l)
     else:
         print("sorry no words in this list had that many chatacters")
         
 def generate_word_r(list):
     return random.choice(list)
-letter_t = []
+letter_ts = {}
+turtles = []
+vailid_letters = "abcdefghijklmnopqrstuvwxyz"
 def draw_word(word):
-    word = generate_word_r(christmas_words)
-    letter_ts = []
-    for i in range(len(word)):
-        writer.write("_", font=("Arial", 50, "normal"))
-        writer.forward(50)
-        letter_ts.append(f"letter_t{i}")
-    for index, turt in enumerate(letter_ts):
+    #word = generate_word_r(christmas_words)
+    for i in range(len(word)): 
+        if word[i] in vailid_letters:
+            writer.write("_", font=("Arial", 50, "normal"))
+            letter_ts[f"letter_t{i}"] = "char"
+            writer.forward(50)
+        else:
+            letter_ts[f"letter_t{i}"] = "space"
+            writer.forward(50)
+    for index, key in enumerate(letter_ts):
         turt = t.Turtle()
+        turtles.append(turt)
         turt.penup()
         turt.hideturtle()
-        turt.speed(0)
-        turt.penup()
-        turt.hideturtle()
-        turt.goto(-245 + (index * 50), -290)
-        turt.write("*", font=("Arial", 50, "normal"))
+        if letter_ts[key] == "char":
+            
+            turt.speed(0)
+            turt.goto(-257 + (index * 50), -290)
+            turt.write("*", font=("Arial", 50, "normal"))
+    print(turtles)
 
+def write_full_word(word):
+    for i in range(len(word)):
+        turtles[i].clear()
+        turtles[i].write(word[i], font=("Arial", 50, "normal"))
 def checkword(word, char):
     ll = []
     for i in word:
         if i ==char:
             ll.append(i)
     return ll
+def get_correct_count(word, char):
+    num = 0
+    for i in word:
+        if i ==char:
+            num+=1
+    return num       
 def start_game(mode, word):
     if mode =="console":
         draw_word(word)
         welcome = input("Welcome to hangman Christman edition! please slect your first letter:  ")
+        
         

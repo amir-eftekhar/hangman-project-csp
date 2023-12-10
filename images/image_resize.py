@@ -21,7 +21,7 @@ def resize_image(input_path, width, height, suffix):
 
 
 def check_file(file_path):
-  if os.path.exists(file_path) and os.patah.isfile(file_path):
+  if os.path.exists(file_path) and os.path.isfile(file_path):
     print(f"File found: {file_path}")
   else:
     print(f"File NOT found: {file_path}")
