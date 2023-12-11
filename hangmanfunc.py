@@ -255,9 +255,7 @@ def start_gameV2(mode):
             draw_word(word)
             play_game_tkinter()
 
-        # Tkinter setup
+       
         root = tk.Tk()
-        root.withdraw()  # Hides the main window
-
-        # Start the Tkinter version of the game
+        root.withdraw()  
         start_game_tkinter()   
