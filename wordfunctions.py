@@ -95,9 +95,5 @@ def get_correct_count(word, char):
         if i ==char:
             num+=1
     return num       
-def start_game(mode, word):
-    if mode =="console":
-        draw_word(word)
-        welcome = input("Welcome to hangman Christman edition! please slect your first letter:  ")
-        
+
         

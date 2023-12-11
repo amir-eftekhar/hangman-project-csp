@@ -48,24 +48,6 @@ def add_corrects(letter, word):
             print(turtles[index])
             turtles[index].clear()
             turtles[index].write(letter, font=("Arial", 50, "normal"))
-
-def start_game(mode, word):
-    if mode =="console":
-        draw_word(word)
-        valid_g = "abcdefghijklmnopqrstuvwxyz "
-        guess1 = input("Welcome to hangman Christman edition! please select your first letter:  ")
-        if guess1 not in valid_g:
-            print("please enter a valid letter")
-            while guess1 not in valid_g:
-                guess1 = input("Welcome to hangman Christman edition! please select your first letter:  ")
-                
-        correct = add_corrects(guess1, word)
-        if not correct:
-            print("sorry your letter was not in the word")
-        num_guesses = len(word)
-        guessed = 0
-        while guessed < num_guesses:
-            guess = input("enter your next letter guess")
 def console_word(word):
     console_word = ""
     for i in word:
