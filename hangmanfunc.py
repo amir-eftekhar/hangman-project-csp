@@ -20,19 +20,24 @@ generate_word_o = wf.generate_words_o
 turtles = wf.turtles
 write_full = wf.write_full_word
 wn = t.Screen()
-
+santa = t.Turtle()
+santa.hideturtle()
+santa.speed(0)
+santa.goto(31, 75)
 hangman_stand = "images/hangmanStand.gif"
-santa_hat = "images/santahat.gif"
-santa_head = "images/santahead.gif"
-santa_body = "images/santa_bod.gif"
-santa_right_arm = "images/right-arm.gif"
-santa_both_arms = "images/bothlegsanta.gif"
-santa_full = "images/fullsanta.gif"
 welcome = "images/welcome-to.gif"
-resize_image(santa_hat, 220, 130, "130")
-resize_image(santa_head, 220, 220, "320")
+santa_full = "images/fullsanta_180.gif"
+santa_both_arms = "images/bothlegsanta_180.gif"
+santa_right_arm = "images/right-arm_180.gif"
+
+santa_body = "images/santa_bod_180.gif"
 santa_head = "images/santahead_320.gif"
 santa_hat = "images/santahat_130.gif"
+
+writer = t.Turtle()
+writer.hideturtle()
+writer.speed(0)
+writer.goto(-250, -10)
 wn.register_shape(welcome)
 wn.register_shape(hangman_stand)
 wn.register_shape(santa_hat)
@@ -78,12 +83,8 @@ def set_up_visuals():
     stand.penup()
     stand.goto(-75, 75)
     stand.shape(hangman_stand)
-    santa = t.Turtle()
-    santa.speed(0)
-    #santa.hideturtle()
-    santa.penup()
-    santa.goto(31, 75)
-    santa.shape(santa_head)
+    
+    #santa.shape(santa_head)
     welcome_t = t.Turtle()
     welcome_t.speed(0)
     welcome_t.penup()
@@ -92,10 +93,50 @@ def set_up_visuals():
 vailid_diff = ['easy', 'medium', 'hard', 'extreme']
 guessed_letters = 0
 vailid_num_players = ['1', '2']
+
+santa_images = [santa_hat,santa_head, santa_body, santa_right_arm, santa_both_arms, santa_full]
+santa_addjustments = [[0,0], [0, -45], [0, -65], [8, -70],[-5,-70 ], [-7, -91] ]
+santa_num = 0
+def change_santa_image():
+    global santa_num
+    
+    if santa_num == 6:
+        writer.goto(-250, -10)
+        writer.write("last chance!", font=("Arial", 50, "normal"))
+    elif santa_num == 7:
+        writer.clear()
+        writer.hideturtle()
+        
+        writer.speed(0)
+        
+        writer.write("You lost!", font=("Arial", 50, "normal"))
+    elif santa_num <6:
+        global santa_addjustments
+        #global santa_num
+        santa.speed(0)
+        santa.setheading(270)
+        santa.goto((31+santa_addjustments[santa_num%len(santa_addjustments)][0]), (75+santa_addjustments[santa_num%len(santa_addjustments)][1]))
+        #print("changing santa image")
+        
+        san_image_num = santa_num%len(santa_images)
+        santa.shape(santa_images[san_image_num])
+        santa.showturtle()
+        #santa_num += 1
 def start_gameV2(mode):
+    global santa_num
+    
     wn.clear()
     set_up_visuals()
-    
+    santa = t.Turtle()
+    santa.speed(0)
+    santa.hideturtle()
+    santa.penup()
+    santa.goto(31, 75)
+    vailid_modes = ["console", "tkinter"]
+    mode = input("enter the mode you want to play in console or tkinter:")
+    if mode not in vailid_modes:
+        while mode not in vailid_modes:
+            mode = input("please enter a valid mode you want to play in console or tkinter (c/t):")
     if mode =="console":
         players = input("do you want to play 2 players or 1 player enter 1/2:  ")
         if players not in vailid_num_players:
@@ -135,15 +176,17 @@ def start_gameV2(mode):
         if correct ==0:
             print("sorry your letter was not in the word")
             guesses +=1
+            change_santa_image()
+            santa_num +=1
             
         else:
             print(f"your letter was in the word {correct} times")
             guessed_letters += correct
-            guesses +=1
+            #guesses +=1
             add_corrects(guess1, word)
         word_minus_spaces = word.replace(" ", "")
             
-        while guesses <= 8:
+        while guesses <= 7:
             print(guessed_letters)
             print(len(word))
             if guessed_letters == len(word_minus_spaces):
@@ -159,12 +202,16 @@ def start_gameV2(mode):
             if correct ==0:
                 print("sorry your letter was not in the word")
                 guesses +=1
+                change_santa_image()
+                santa_num +=1
+                
             
             else:
                 print(f"your letter was in the word {correct} times")
-                guesses +=1
+                #guesses +=1
                 add_corrects(guess, word)
                 guessed_letters += correct
+                
                 #Console_word = change_console_word(word, guess)
             if guessed_letters == len(word_minus_spaces):
                 print("Win! you guessed the word!")
@@ -176,9 +223,10 @@ def start_gameV2(mode):
             write_full(word)
     elif mode == "tkinter":
         def play_game_tkinter():
+            global santa_num
             global word, guessed_letters, guesses
             word_minus_spaces = word.replace(" ", "")
-            if guesses > 8 or guessed_letters >= len(word_minus_spaces):
+            if guesses > 7 or guessed_letters >= len(word_minus_spaces):
                 end_game_tkinter()
                 return
 
@@ -192,12 +240,14 @@ def start_gameV2(mode):
             if correct == 0:
                 messagebox.showinfo("Result", "Sorry, your letter was not in the word")
                 guesses += 1
+                change_santa_image()
+                santa_num +=1
             else:
                 guessed_letters += correct
                 messagebox.showinfo("Result", f"Your letter was in the word {correct} times")
-                guesses += 1
+                #guesses += 1
                 add_corrects(guess, word)
-
+            
             play_game_tkinter()
 
         def end_game_tkinter():
